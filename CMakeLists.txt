@@ -36,10 +36,18 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 #memory.c 沒有被你的 CMake 專案列入編譯目標，因此 VS Code IntelliSense 不知道該用 Pico 專案的哪套編譯設定分析它。
-#add_executable(260818 260818.c )
-#add_executable(260818 memory.c )
-#add_executable(260818 uart.c )
-add_executable(260818 uart_memory.c )
+# BH1750 - Pico SDK API
+#add_executable(260818 bh1750_api.c)
+# BH1750 - Bare-Metal / Register-Level
+#add_executable(260818 bh1750_baremetal.c)
+# UART - Pico SDK API
+#add_executable(260818 uart_api.c)
+# UART - Bare-Metal / Register-Level
+#add_executable(260818 uart_baremetal.c)
+# BH1750 I2C + UART TX - Bare-Metal 整合版
+add_executable(260818 bh1750_uart_baremetal.c)
+# GPIO Voltage Test
+#add_executable(260818 gpio_voltage_test.c)
 
 pico_set_program_name(260818 "260818")
 pico_set_program_version(260818 "0.1")

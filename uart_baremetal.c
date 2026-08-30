@@ -1,11 +1,25 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "pico/stdlib.h" //學習
+#include "hardware/clocks.h"
 
 int main(void)
 {
   stdio_init_all();
   uint32_t value;
+  // UART0 Reset
+  sleep_ms(8000);
+  printf("clk_sys  = %lu Hz\n", clock_get_hz(clk_sys));
+  printf("clk_peri = %lu Hz\n", clock_get_hz(clk_peri));
+  value = *(volatile uint32_t *)0x4000C000;
+  value |= (1u << 22);
+  *(volatile uint32_t *)0x4000C000 = value;
+
+  value &= ~(1u << 22);
+  *(volatile uint32_t *)0x4000C000 = value;
+
+  while ((*(volatile uint32_t *)0x4000C008 & (1u << 22)) == 0) {}
+  printf("UART reset done\n");
 
   //UART 不像 I2C 一樣必須使用 pull-up。
   //TX 通常不需要 pull-up；RX 可視需要開 pull-up，避免輸入 floating。
